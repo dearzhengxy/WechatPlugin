@@ -3,7 +3,9 @@
 A cordova plugin, a JS version of Wechat SDK
 
 # Feature
-基于2.1.0版本的cordova-plugin-wechat插件修改，用于解决安卓中微信分享返回闪退问题
+基于2.1.0版本的cordova-plugin-wechat插件修改，用于解决
+  1,安卓中微信分享返回闪退问题
+  2,添加了一次性订阅消息授权功能
 
 这是cordova版本太高，不兼容这个插件所导致的。我是修改了$your_project/plugins/cordova-plugin-wechat/scripts/android-install.js中的
 var targetDir = path.join(projectRoot, "platforms", "android", "src", packageName.replace(/\./g, path.sep), "wxapi");

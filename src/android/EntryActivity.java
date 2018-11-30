@@ -1,4 +1,4 @@
-package __PACKAGE_NAME__;
+package com.zhaoyin.hjx.wxapi;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.util.Log;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.modelbiz.SubscribeMessage;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
@@ -73,6 +74,9 @@ public class EntryActivity extends Activity implements IWXAPIEventHandler {
                         break;
                     case ConstantsAPI.COMMAND_CHOOSE_CARD_FROM_EX_CARD_PACKAGE:
                         plunckInvoiceData(resp);
+                        break;
+                    case ConstantsAPI.COMMAND_SUBSCRIBE_MESSAGE:
+                        subscribeData(resp);
                         break;
                     case ConstantsAPI.COMMAND_PAY_BY_WX:
                     default:
@@ -155,4 +159,26 @@ public class EntryActivity extends Activity implements IWXAPIEventHandler {
 
             ctx.success(response);
         }
+
+    protected void subscribeData(BaseResp resp) {
+
+        CallbackContext ctx = Wechat.getCurrentCallbackContext();
+        SubscribeMessage.Resp resp1=(SubscribeMessage.Resp) resp;
+        JSONObject response = new JSONObject();
+
+        if (ctx == null) {
+            return ;
+        }
+
+        try {
+            response.put("openId", resp1.openId);
+            response.put("templateId", resp1.templateID);
+            response.put("action", resp1.action);
+            response.put("scene", resp1.scene);
+        } catch (JSONException e) {
+            Log.e(Wechat.TAG, e.getMessage());
+        }
+
+        ctx.success(response);
+    }
 }

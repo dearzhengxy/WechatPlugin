@@ -194,6 +194,9 @@ static int const MAX_THUMBNAIL_SIZE = 320;
 
 }
 
+
+
+
 - (void)jumpToBizProfile:(CDVInvokedUrlCommand *)command
 {
     // check arguments
@@ -344,6 +347,22 @@ static int const MAX_THUMBNAIL_SIZE = 320;
                     CDVPluginResult *commandResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:response];
                     [self.commandDelegate sendPluginResult:commandResult callbackId:self.currentCallbackId];
                 }
+       else if ([resp isKindOfClass:[WXSubscribeMsgResp class]])
+        {
+            // fix issue that lang and country could be nil for iPhone 6 which caused crash.
+            WXSubscribeMsgResp* authResp = (WXSubscribeMsgResp*)resp;
+            response = @{
+                         @"openId": authResp.openId != nil ? authResp.openId : @"",
+                         @"templateId": authResp.templateId != nil ? authResp.templateId : @"",
+                         @"action": authResp.action,
+                         @"scene": [NSNumber numberWithInt:authResp.scene]
+                         };
+            
+            CDVPluginResult *commandResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:response];
+            
+            [self.commandDelegate sendPluginResult:commandResult callbackId:self.currentCallbackId];
+        }
+        
         else
         {
             [self successWithCallbackID:self.currentCallbackId];
@@ -518,6 +537,60 @@ static int const MAX_THUMBNAIL_SIZE = 320;
 {
     CDVPluginResult *commandResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:message];
     [self.commandDelegate sendPluginResult:commandResult callbackId:callbackID];
+}
+
+- (void)wechatSubscribe: (CDVInvokedUrlCommand *)command{
+    
+    // if not installed
+    if (![WXApi isWXAppInstalled])
+    {
+        [self failWithCallbackID:command.callbackId withMessage:@"未安装微信"];
+        return ;
+    }
+    
+    // check arguments
+    NSDictionary *params = [command.arguments objectAtIndex:0];
+    if (!params)
+    {
+        [self failWithCallbackID:command.callbackId withMessage:@"参数格式错误"];
+        return ;
+    }
+    
+    WXSubscribeMsgReq *req = [[WXSubscribeMsgReq alloc] init];
+    // check the scene
+
+    if ([params objectForKey:@"scene"])
+    {
+        req.scene = (int)[[params objectForKey:@"scene"] integerValue];
+    }
+    else
+    {
+        req.scene = 3;
+    }
+    
+    req.templateId = @"brS7vQTlKoxeBEMr4v136_a3nEAERldJlXrbsvQcl6I";
+    
+    
+    // async
+//    [self.commandDelegate runInBackground:^{
+//
+//    }];
+    
+    
+    //wxfaaa01a5cb67b1d1
+//    req.appID=@"wxfaaa01a5cb67b1d1";
+    
+    
+    if ([WXApi sendReq:req])
+    {
+        // save th e callback id
+        self.currentCallbackId = command.callbackId;
+    }
+    else
+    {
+        [self failWithCallbackID:command.callbackId withMessage:@"发送请求失败"];
+    }
+
 }
 
 @end

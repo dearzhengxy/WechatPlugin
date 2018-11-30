@@ -32,5 +32,6 @@ enum  CDVWechatSharingType {
 - (void)jumpToBizProfile:(CDVInvokedUrlCommand *)command;
 - (void)jumpToWechat:(CDVInvokedUrlCommand *)command;
 - (void)chooseInvoiceFromWX: (CDVInvokedUrlCommand *)command;
+- (void)wechatSubscribe: (CDVInvokedUrlCommand *)command;
 
 @end

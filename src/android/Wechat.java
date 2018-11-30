@@ -9,6 +9,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.webkit.URLUtil;
 
+import com.tencent.mm.opensdk.modelbiz.SubscribeMessage;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXAppExtendObject;
@@ -90,6 +91,7 @@ public class Wechat extends CordovaPlugin {
     public static final int SCENE_SESSION = 0;
     public static final int SCENE_TIMELINE = 1;
     public static final int SCENE_FAVORITE = 2;
+    public static final int SCENE_SUBSCRIBE = 3;
 
     public static final int MAX_THUMBNAIL_SIZE = 320;
 
@@ -153,6 +155,8 @@ public class Wechat extends CordovaPlugin {
             return isInstalled(callbackContext);
         }else if (action.equals("chooseInvoiceFromWX")){
             return chooseInvoiceFromWX(args, callbackContext);
+        }else if (action.equals("wechatSubscribe")){
+            return wechatSubscribe(args, callbackContext);
         }
 
         return false;
@@ -231,6 +235,48 @@ public class Wechat extends CordovaPlugin {
 
         // send no result
         sendNoResultPluginResult(callbackContext);
+
+        return true;
+    }
+
+    protected boolean wechatSubscribe(CordovaArgs args, final CallbackContext callbackContext)
+            throws JSONException {
+        final IWXAPI api = getWxAPI(cordova.getActivity());
+
+        // check if installed
+        if (!api.isWXAppInstalled()) {
+            callbackContext.error(ERROR_WECHAT_NOT_INSTALLED);
+            return true;
+        }
+
+        // check if # of arguments is correct
+        final JSONObject params;
+        try {
+            params = args.getJSONObject(0);
+        } catch (JSONException e) {
+            callbackContext.error(ERROR_INVALID_PARAMETERS);
+            return true;
+        }
+
+
+        SubscribeMessage.Req req=new SubscribeMessage.Req();
+        if (params.has(KEY_ARG_SCENE)) {
+            req.scene=params.getInt(KEY_ARG_SCENE);
+        } else {
+            req.scene = 3;
+        }
+
+        req.templateID = "brS7vQTlKoxeBEMr4v136_a3nEAERldJlXrbsvQcl6I";
+
+        if (api.sendReq(req)) {
+            Log.i(TAG, "Invoice request has been sent successfully.");
+            // send no result
+            sendNoResultPluginResult(callbackContext);
+        } else {
+            Log.i(TAG, "Invoice request has been sent unsuccessfully.");
+            // send error
+            callbackContext.error(ERROR_SEND_REQUEST_FAILED);
+        }
 
         return true;
     }

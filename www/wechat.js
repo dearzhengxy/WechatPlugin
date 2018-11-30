@@ -4,7 +4,9 @@ module.exports = {
     Scene: {
         SESSION:  0, // 聊天界面
         TIMELINE: 1, // 朋友圈
-        FAVORITE: 2  // 收藏
+        FAVORITE: 2,  // 收藏
+        SubscribeAuthorization: 3  // 订阅号授权
+
     },
 
     Type: {
@@ -158,6 +160,22 @@ module.exports = {
      */
     chooseInvoiceFromWX: function (params, onSuccess, onError) {
         exec(onSuccess, onError, "Wechat", "chooseInvoiceFromWX", [params]);
+    },
+     /**
+     * wechatSubscribe 
+     *
+     * @example
+     * <code>
+     * params: scene:Wechat.Scene.SubscribeAuthorization
+     * Wechat.wechatSubscribe(params, function () {
+     *     alert("Success");
+     * }, function (reason) {
+     *     alert("Failed: " + reason);
+     * });
+     * </code>
+     */
+     wechatSubscribe: function (params, onSuccess, onError) {
+        exec(onSuccess, onError, "Wechat", "wechatSubscribe", [params]);
     }
 
 };
