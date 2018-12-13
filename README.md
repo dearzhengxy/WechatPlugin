@@ -133,17 +133,6 @@ Wechat.chooseInvoiceFromWX(data,function(data){
 
 See [FAQ](https://github.com/xu-li/cordova-plugin-wechat/wiki/FAQ).
 
-# TODO
-
-1. ~~Add android version~~
-
-2. ~~Share to wechat session(聊天) and wechat favorite(收藏)~~
-
-3. ~~Add other media types, including music etc.~~
-
-4. ~~Other APIs~~
-
-5. ~~Android Version update~~
 
 # LICENSE
 
