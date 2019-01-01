@@ -36,13 +36,17 @@
 
 -(BOOL)swiz_application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
     
-    CDVWechat* wechat = [self.viewController getCommandInstance:@"Wechat"];
+       if (![url.host isEqualToString:@"safepay"]) {
     
-    if ([url.scheme isEqualToString:wechat.wechatAppId]) {
-        return [WXApi handleOpenURL:url delegate:wechat];
+        CDVWechat* wechat = [self.viewController getCommandInstance:@"Wechat"];
+
+        if ([url.scheme isEqualToString:wechat.wechatAppId]) {
+            return [WXApi handleOpenURL:url delegate:wechat];
+        }
+        
+        [self swiz_application:app openURL:url options:options];
     }
-    
-    [self swiz_application:app openURL:url options:options];
+
 
     return YES;
 }
