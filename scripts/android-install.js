@@ -53,6 +53,7 @@ module.exports = function (context) {
         });
     } else {
         // create directory
+        shell.rm('-rf', targetDir);
         shell.mkdir('-p', targetDir);
 
         // sync the content

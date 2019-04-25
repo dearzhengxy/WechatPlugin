@@ -3,19 +3,22 @@
 A cordova plugin, a JS version of Wechat SDK
 
 # Feature
-基于2.1.0版本的cordova-plugin-wechat插件修改，用于解决
-  1,安卓中微信分享返回闪退问题
+1,基于2.1.0版本的cordova-plugin-wechat插件修改，用于解决
+  1,安卓中微信分享返回闪退问题(
+  这是cordova版本太高，不兼容这个插件所导致的。我是修改了$your_project/plugins/cordova-plugin-wechat/scripts/android-install.js中的
+  var targetDir = path.join(projectRoot, "platforms", "android", "src", packageName.replace(/\./g, path.sep), "wxapi");
+
+  修改为
+   var targetDir = path.join(projectRoot, "platforms", "android", "app","src","main","java", packageName.replace(/\./g, path.sep), "wxapi");)
+
   2,添加了一次性订阅消息授权功能
 
-这是cordova版本太高，不兼容这个插件所导致的。我是修改了$your_project/plugins/cordova-plugin-wechat/scripts/android-install.js中的
-var targetDir = path.join(projectRoot, "platforms", "android", "src", packageName.replace(/\./g, path.sep), "wxapi");
-
-修改为
-var targetDir = path.join(projectRoot, "platforms", "android", "app","src","main","java", packageName.replace(/\./g, path.sep), "wxapi"); 
+  3，添加了运行环境参数，可以传入不同的环境参数比如：dev,test,prod等可以自定义
 
 # Install
 
-1. ```cordova plugin add cordova-plugin-jb-wechat  --variable wechatappid=YOUR_WECHAT_APPID```, or using [plugman](https://npmjs.org/package/plugman), [phonegap](https://npmjs.org/package/phonegap), [ionic](http://ionicframework.com/)
+1. ```cordova plugin add cordova-plugin-jb-wechat  --variable wechatappid=YOUR_WECHAT_APPID```, 
+or using [plugman](https://npmjs.org/package/plugman), [phonegap](https://npmjs.org/package/phonegap), [ionic](http://ionicframework.com/)
 
 2. ```cordova build ios``` or ```cordova build android```
 
