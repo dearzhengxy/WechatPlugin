@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-jb-wechat",
-  "version": "2.1.7",
+  "version": "2.1.8",
   "description": "wechat plugin",
   "cordova": {
     "id": "cordova-plugin-jb-wechat",

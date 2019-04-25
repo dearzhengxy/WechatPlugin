@@ -4,7 +4,7 @@
     xmlns:rim="http://www.blackberry.com/ns/widgets"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="cordova-plugin-jb-wechat"
-    version="2.1.7">
+    version="2.1.8">
 
     <name>Wechat</name>
     <description>A cordova plugin, a JS version of Wechat SDK</description>
